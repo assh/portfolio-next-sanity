@@ -1,19 +1,47 @@
 import type {NarrativePortableText} from '@/sanity/types'
 
+type NarrativeValue = NarrativePortableText | string | undefined
+
 type NarrativeContentProps = {
-	value?: NarrativePortableText
+	value?: NarrativeValue
 	className?: string
 }
 
+type LinkMark = {
+	href?: string
+	_type: 'link'
+	_key: string
+}
 
 const isPortableArray = (
-	blocks?: NarrativePortableText
+	blocks?: NarrativeValue
 ): blocks is NarrativePortableText => Array.isArray(blocks)
+
+const isLinkMark = (value: unknown): value is LinkMark => {
+	if (!value || typeof value !== 'object') {
+		return false
+	}
+
+	const candidate = value as Partial<LinkMark>
+	return candidate._type === 'link' && typeof candidate._key === 'string'
+}
 
 export const NarrativeContent = ({
 	value,
 	className,
 }: NarrativeContentProps) => {
+	if (typeof value === 'string') {
+		if (!value.trim()) {
+			return null
+		}
+
+		return (
+			<div className={className}>
+				<p className='text-base leading-7 text-zinc-600 dark:text-zinc-300'>{value}</p>
+			</div>
+		)
+	}
+
 	if (!isPortableArray(value) || value.length === 0) {
 		return null
 	}
@@ -41,9 +69,7 @@ export const NarrativeContent = ({
 
 							const linkMark = child.marks
 								.map((markKey) => markMap.get(markKey))
-								.find((mark): mark is {href?: string; _type?: string; _key?: string} =>
-									Boolean(mark?.href)
-								)
+								.find((mark): mark is LinkMark => isLinkMark(mark) && Boolean(mark.href))
 
 							if (!linkMark?.href) {
 								return (
