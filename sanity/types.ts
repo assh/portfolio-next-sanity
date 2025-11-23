@@ -341,3 +341,95 @@ export type Slug = {
 
 export type AllSanitySchemaTypes = NarrativePortableText | ExternalLink | ImpactHighlight | TimePeriod | Language | SkillCategory | Certification | Publication | Project | Education | Experience | Resume | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
+// Source: sanity/lib/queries.ts
+// Variable: resumeQuery
+// Query: *[_type == "resume"][0]{	_id,	fullName,	headline,	location,	summary,	experiences[]->{		_id,		role,		organization,		location,		employmentType,		industryFocus,		summary,		period,		engagementStatus,		highlights,		tooling	},	projects[]->{		_id,		title,		role,		objective,		summary,		period,		status,		highlights,		technologies,		links	},	education[]->{		_id,		degree,		institution,		location,		studyType,		period,		classStanding,		modules,		summary	},	publications[]->{		_id,		title,		publisher,		location,		category,		publishedAt,		summary,		citation,		links	},	certifications[]->{		_id,		name,		issuer,		location,		issuedAt,		credentialId,		verificationUrl	},	skillCategories[]->{		_id,		label,		skills	},	languages[]->{		_id,		name,		proficiency	}}
+export type ResumeQueryResult = {
+  _id: string;
+  fullName: string | null;
+  headline: string | null;
+  location: string | null;
+  summary: NarrativePortableText | null;
+  experiences: Array<{
+    _id: string;
+    role: string | null;
+    organization: string | null;
+    location: string | null;
+    employmentType: "contract" | "fullTime" | "internship" | "partTime" | null;
+    industryFocus: string | null;
+    summary: NarrativePortableText | null;
+    period: TimePeriod | null;
+    engagementStatus: "completed" | "current" | null;
+    highlights: Array<{
+      _key: string;
+    } & ImpactHighlight> | null;
+    tooling: Array<string> | null;
+  }> | null;
+  projects: Array<{
+    _id: string;
+    title: string | null;
+    role: string | null;
+    objective: string | null;
+    summary: NarrativePortableText | null;
+    period: TimePeriod | null;
+    status: "completed" | "inProgress" | "planned" | null;
+    highlights: Array<{
+      _key: string;
+    } & ImpactHighlight> | null;
+    technologies: Array<string> | null;
+    links: Array<{
+      _key: string;
+    } & ExternalLink> | null;
+  }> | null;
+  education: Array<{
+    _id: string;
+    degree: string | null;
+    institution: string | null;
+    location: string | null;
+    studyType: "distance" | "fullTime" | "partTime" | null;
+    period: TimePeriod | null;
+    classStanding: string | null;
+    modules: Array<string> | null;
+    summary: NarrativePortableText | null;
+  }> | null;
+  publications: Array<{
+    _id: string;
+    title: string | null;
+    publisher: string | null;
+    location: string | null;
+    category: "article" | "chapter" | "conference" | "journal" | null;
+    publishedAt: string | null;
+    summary: string | null;
+    citation: string | null;
+    links: Array<{
+      _key: string;
+    } & ExternalLink> | null;
+  }> | null;
+  certifications: Array<{
+    _id: string;
+    name: string | null;
+    issuer: string | null;
+    location: string | null;
+    issuedAt: string | null;
+    credentialId: string | null;
+    verificationUrl: string | null;
+  }> | null;
+  skillCategories: Array<{
+    _id: string;
+    label: string | null;
+    skills: Array<string> | null;
+  }> | null;
+  languages: Array<{
+    _id: string;
+    name: string | null;
+    proficiency: "conversational" | "fluent" | "native" | "professional" | null;
+  }> | null;
+} | null;
+
+// Query TypeMap
+import "@sanity/client";
+declare module "@sanity/client" {
+  interface SanityQueries {
+    "\n*[_type == \"resume\"][0]{\n\t_id,\n\tfullName,\n\theadline,\n\tlocation,\n\tsummary,\n\texperiences[]->{\n\t\t_id,\n\t\trole,\n\t\torganization,\n\t\tlocation,\n\t\temploymentType,\n\t\tindustryFocus,\n\t\tsummary,\n\t\tperiod,\n\t\tengagementStatus,\n\t\thighlights,\n\t\ttooling\n\t},\n\tprojects[]->{\n\t\t_id,\n\t\ttitle,\n\t\trole,\n\t\tobjective,\n\t\tsummary,\n\t\tperiod,\n\t\tstatus,\n\t\thighlights,\n\t\ttechnologies,\n\t\tlinks\n\t},\n\teducation[]->{\n\t\t_id,\n\t\tdegree,\n\t\tinstitution,\n\t\tlocation,\n\t\tstudyType,\n\t\tperiod,\n\t\tclassStanding,\n\t\tmodules,\n\t\tsummary\n\t},\n\tpublications[]->{\n\t\t_id,\n\t\ttitle,\n\t\tpublisher,\n\t\tlocation,\n\t\tcategory,\n\t\tpublishedAt,\n\t\tsummary,\n\t\tcitation,\n\t\tlinks\n\t},\n\tcertifications[]->{\n\t\t_id,\n\t\tname,\n\t\tissuer,\n\t\tlocation,\n\t\tissuedAt,\n\t\tcredentialId,\n\t\tverificationUrl\n\t},\n\tskillCategories[]->{\n\t\t_id,\n\t\tlabel,\n\t\tskills\n\t},\n\tlanguages[]->{\n\t\t_id,\n\t\tname,\n\t\tproficiency\n\t}\n}": ResumeQueryResult;
+  }
+}
